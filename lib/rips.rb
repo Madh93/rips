@@ -1,5 +1,6 @@
 require "rips/version"
 require "rips/assembler"
+require "rips/error"
 
 module Rips
 
