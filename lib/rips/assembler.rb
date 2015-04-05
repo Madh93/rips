@@ -60,7 +60,7 @@ module Rips
 
     # Obtain instruction's instance object
     def get_instruction
-      Object.const_get("Instructions::#{@cmd[:name].capitalize}").new
+      Object.const_get("Rips::Instructions::#{@cmd[:name].capitalize}").new
     end
 
     # Exists instruction in Instruction Set?
