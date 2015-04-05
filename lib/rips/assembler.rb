@@ -91,7 +91,9 @@ module Rips
         if var.syntax? @cmd[:arguments][i]
           @cmd[:arguments][i] = var.to_i(@cmd[:arguments][i])
         else
-          Error::message(0)      
+          Error::message( 6,
+                          @line,
+                          var.error(@cmd[:arguments][i]) )     
         end
       end
     end
