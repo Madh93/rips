@@ -47,7 +47,7 @@ module Rips
     # Codification log of instruction
     def show
       # Show code with '_' separator
-      # puts "Code Instruction: " << @instruction.code.scan(/.{4}|.+/).join("_")
+      puts "Code Instruction: " << @instruction.code.scan(/.{4}|.+/).join("_")
     end
 
     # Generate output in "progfile.dat"

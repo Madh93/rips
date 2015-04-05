@@ -26,6 +26,16 @@ module Rips
 
       # Coding to Machine Code
       def code
+
+        output = [@opcode.to_bin(@opcode.size)]
+
+        @format.args.each do |key,value|
+          output << value.to_bin(@length[key])
+        end
+
+        output.insert(-2,@length[:blank]) if (@length.key? :blank)
+
+        output.reverse.join.to_s
       end      
 
     end
