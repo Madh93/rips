@@ -65,8 +65,8 @@ module Rips
 
     # Exists instruction in Instruction Set?
     def exists_instruction
-      if !Instruction::SET.include? (@cmd[:name])
-        Error::message( 1, 
+      if !Instructions::SET.include? (@cmd[:name])
+        Error::message( 4, 
                         @line, 
                         @cmd[:name] )
       end
@@ -75,7 +75,7 @@ module Rips
     # Check number of arguments given with expected by instruction
     def argument_size
       if @cmd[:arguments].size != @instruction.args_number
-        Error::message( 2, 
+        Error::message( 5, 
                         @line, 
                         @cmd[:name], 
                         @cmd[:arguments].size, 
