@@ -8,15 +8,26 @@ module Rips
     class Instruction
 
       # @name: mnemonic name
-      # @type: instruction format
-      def initialize (name, type)
-        @name,@type = name,type
+      # @format: instruction format
+      def initialize (name, format)
+        @name,@format = name,format
+        @opcode = format.opcode
       end
 
       # Return number of arguments
       def args_number
-        @type.args_number
+        @format.args_number
       end      
+
+      # Pass all arguments at once
+      def set_arguments (args)
+        @format.set_arguments(args)
+      end
+
+      # Coding to Machine Code
+      def code
+      end      
+
     end
   end  
 end

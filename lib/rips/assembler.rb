@@ -34,7 +34,7 @@ module Rips
         argument_size
         argument_syntax
 
-        # @instruction.set_arguments(cmd[:arguments])
+        @instruction.set_arguments(@cmd[:arguments])
 
         show
         # @output << @instruction.code
@@ -46,6 +46,8 @@ module Rips
 
     # Codification log of instruction
     def show
+      # Show code with '_' separator
+      # puts "Code Instruction: " << @instruction.code.scan(/.{4}|.+/).join("_")
     end
 
     # Generate output in "progfile.dat"
@@ -85,6 +87,13 @@ module Rips
 
     # Check if arguments are the same variable type of instruction
     def argument_syntax
+      @instruction.variables.each_with_index do |var,i|
+        if var.syntax? @cmd[:arguments][i]
+          @cmd[:arguments][i] = var.to_i(@cmd[:arguments][i])
+        else
+          Error::message(0)      
+        end
+      end
     end
   end
 end

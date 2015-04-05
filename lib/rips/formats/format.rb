@@ -1,3 +1,5 @@
+require "rips/utils"
+
 module Rips
   module Formats
 
