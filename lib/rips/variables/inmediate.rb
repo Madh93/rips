@@ -15,7 +15,21 @@ module Rips
 
       # Check input variable syntax
       def syntax? (value)
+
+        if !number? (value)
+          return false
+        end      
+
+        value = value.to_i
+
+        # It should be between syntax range
+        if !value.to_i.between?(-2**(@length-1),2**(@length-1)-1)
+          return false
+        else
+          return true
+        end        
       end
+      
     end
   end
 end
