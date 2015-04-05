@@ -37,7 +37,7 @@ module Rips
         @instruction.set_arguments(@cmd[:arguments])
 
         show
-        # @output << @instruction.code
+        @output << @instruction.code
         @line += 1
       end
       
@@ -52,6 +52,11 @@ module Rips
 
     # Generate output in "progfile.dat"
     def generate
+      File.open("progfile.dat", "w") do |f|
+        @output.each do |line|
+          f.puts line
+        end
+      end        
     end        
 
     # Split on tokens
