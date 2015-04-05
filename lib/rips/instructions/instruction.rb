@@ -1,5 +1,6 @@
 require "rips/instructions/set"
 require "rips/formats"
+require "rips/variables"
 
 module Rips
   module Instructions
