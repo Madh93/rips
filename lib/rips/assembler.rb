@@ -1,3 +1,5 @@
+require "rips/instructions"
+
 module Rips
   class Assembler
     
