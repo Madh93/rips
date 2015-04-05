@@ -12,6 +12,11 @@ module Rips
       def initialize (name, type)
         @name,@type = name,type
       end
+
+      # Return number of arguments
+      def args_number
+        @type.args_number
+      end      
     end
   end  
 end
