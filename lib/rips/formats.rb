@@ -1,0 +1,1 @@
+require "rips/formats/cformat"
