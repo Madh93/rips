@@ -1,6 +1,6 @@
 module Rips
   module Instructions
 
-    SET = []
+    SET = ["li"]
   end
 end
