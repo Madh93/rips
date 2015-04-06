@@ -11,7 +11,7 @@ module Rips
     def initialize
       @input = []
       @output = []
-      @cmd
+      @cmd = {}
       @instruction
       @line = 1      
     end
@@ -26,18 +26,26 @@ module Rips
 
       @input.each do |line|
 
-        parse_input(line)
-        exists_instruction
+        # If line is empty -> next line
+        if !line.empty?
 
-        @instruction = get_instruction
-        
-        argument_size
-        argument_syntax
+          parse_input(line)
+          @instruction = nil
 
-        @instruction.set_arguments(@cmd[:arguments])
+          # If it's a comment -> show but not work with it
+          if line[0] != "#"
 
-        show
-        @output << @instruction.code
+            exists_instruction
+            @instruction = get_instruction
+            
+            argument_size
+            argument_syntax
+
+            @instruction.set_arguments(@cmd[:arguments])
+            @output << @instruction.code
+          end
+          show
+        end        
         @line += 1
       end
       
@@ -46,8 +54,17 @@ module Rips
 
     # Codification log of instruction
     def show
-      # Show code with '_' separator
-      puts "Code Instruction: " << @instruction.code.scan(/.{4}|.+/).join("_")
+
+      # If line was a comment -> @instruction should be nil
+      if @instruction.nil?
+        codification = ""
+      else
+        codification = @instruction.code.scan(/.{4}|.+/).join("_")
+      end
+
+      puts  "@#{@line}:" \
+            "\t#{codification}" \
+            "\t#{@cmd[:comments]}"
     end
 
     # Generate output in "progfile.dat"
@@ -61,8 +78,19 @@ module Rips
 
     # Split on tokens
     def parse_input (line)
-      @cmd = {  name: line.split(' ').first.downcase,
-                arguments: line.split(' ',2).pop.delete(' ').split(',') }      
+
+      if line[0] == "#"
+        @cmd[:comments] = line
+      else
+        @cmd[:name] = line.split("#").first.split(" ").first
+        @cmd[:arguments] = line.split("#").first.split(@cmd[:name])
+        if !@cmd[:arguments].empty?
+          @cmd[:arguments] = @cmd[:arguments].pop.split("#").first.delete(" ").split(",")
+        end
+        @cmd[:comments] = line.split("#").slice(1..-1).join
+        @cmd[:comments].insert(0,"#") if !@cmd[:comments].empty?
+      end
+
     end
 
     # Obtain instruction's instance object
