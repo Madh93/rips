@@ -2,26 +2,33 @@ require "rips/variables/variable"
 
 module Rips
   module Variables
-
-    class Inmediate < Variable 
+ 
+    class Address < Variable 
 
       attr_reader :syntax
 
       # @syntax: example syntax
       def initialize
-        super(8)
-        @syntax = "-128...127"
+        super(2)
+        @syntax = "$0-3"
       end
 
       # Check input variable syntax
       def syntax? (value)
 
-        if !number? (value)
+        if !register? (value)
           return false
         end      
 
+        # Get integer part
+        value = value.split('$',2).last        
+
+        if !number? (value)
+          return false
+        end  
+
         # It should be between syntax range
-        if !value.to_i.between?(-2**(@length-1),2**(@length-1)-1)
+        if !value.to_i.between?(0,2**@length-1)
           return false
         else
           return true
