@@ -3,12 +3,14 @@ require "rips/instructions"
 module Rips
   class Assembler
     
+    # @debug: switch to show trace in console
     # @input: array with assembly instructions
     # @output: array with coded instructions
     # @cmd: line split on tokens (name + arguments)
     # @instruction: instruction instance
     # @line: number of file's line
-    def initialize
+    def initialize (debug)
+      @debug = debug
       @input = []
       @output = []
       @cmd = {}
@@ -44,7 +46,7 @@ module Rips
             @instruction.set_arguments(@cmd[:arguments])
             @output << @instruction.code
           end
-          show
+          show if @debug
         end        
         @line += 1
       end
@@ -82,7 +84,7 @@ module Rips
       if line[0] == "#"
         @cmd[:comments] = line
       else
-        @cmd[:name] = line.split("#").first.split(" ").first
+        @cmd[:name] = line.split("#").first.split(" ").first.downcase
         @cmd[:arguments] = line.split("#").first.split(@cmd[:name])
         if !@cmd[:arguments].empty?
           @cmd[:arguments] = @cmd[:arguments].pop.split("#").first.delete(" ").split(",")

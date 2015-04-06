@@ -4,16 +4,27 @@ require "rips/error"
 
 module Rips
 
+  debug=false
+
+  Error::message(1) if ARGV.empty?
+
+  # Check arguments
+  if ARGV.include?("-d")
+    debug = true
+    ARGV.delete("-d")
+  elsif ARGV.include?("--debug")
+    debug = true
+    ARGV.delete("--debug")
+  end
+
   # Check for a valid file
-  if ARGV.empty?
-    Error::message(1)
-  elsif !File.exist? ARGV[0]
+  if !File.exist? ARGV[0]
     Error::message(2)
   elsif !File.readable? ARGV[0]
     Error::message(3)
   end
 
-  rips = Assembler.new
+  rips = Assembler.new(debug)
 
   File.open(ARGV[0], "r") do |f|
     f.each_line do |line|
