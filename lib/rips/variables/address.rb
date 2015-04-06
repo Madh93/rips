@@ -8,24 +8,26 @@ module Rips
       attr_reader :syntax
 
       # @syntax: example syntax
+      # @range: bit's range for variable
       def initialize
         super(10)
-        @syntax = "0...1023"
+        @syntax = "0..1023"
+        @range = [0, 2**@length-1]
       end
 
       # Check input variable syntax
       def syntax? (value)
 
-        if !number? (value)
+        if !number?(value)
           return false
         end      
 
         # It should be between syntax range
-        if !value.to_i.between?(0,2**@length-1)
+        if !between?(value, @range)
           return false
         else
           return true
-        end        
+        end       
       end
       
     end
