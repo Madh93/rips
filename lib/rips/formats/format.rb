@@ -12,6 +12,11 @@ module Rips
       def initialize (opcode, args_number)
         @opcode, @args_number = opcode, args_number
       end
+
+      # Pass all arguments at once 
+      def set_arguments (args)
+      end
+      
     end
   end
 end
