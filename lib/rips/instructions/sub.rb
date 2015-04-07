@@ -12,7 +12,7 @@ module Rips
       def initialize
         super("sub",Formats::DFormat.new(0b0011))
         @variables = [Variables::Register.new, Variables::Register.new, Variables::Register.new]
-        @length = {r3:4, r2:4, r1:4}
+        @length = {r3:4, r2:4, r1:4, op:4}
       end
 
       # Swap subtractor

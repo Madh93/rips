@@ -12,7 +12,7 @@ module Rips
       def initialize
         super("not",Formats::CFormat.new(0b0001))
         @variables = [Variables::Register.new, Variables::Register.new]
-        @length = {r2:4, r1:4, blank:4}
+        @length = {r2:4, r1:4, op:4, blank:4}
       end
     end
   end  
