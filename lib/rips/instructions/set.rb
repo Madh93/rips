@@ -1,6 +1,14 @@
 module Rips
   module Instructions
 
-    SET = ["add", "li", "sub"]
+    SET = 
+      [ "add", 
+        "and",
+        "li", 
+        "move",
+        "neg",
+        "not",
+        "or",
+        "sub" ]
   end
 end

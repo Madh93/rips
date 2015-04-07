@@ -1,3 +1,8 @@
 require "rips/instructions/add"
+require "rips/instructions/and"
 require "rips/instructions/li"
+require "rips/instructions/move"
+require "rips/instructions/neg"
+require "rips/instructions/not"
+require "rips/instructions/or"
 require "rips/instructions/sub"

@@ -14,6 +14,12 @@ module Rips
         @variables = [Variables::Register.new, Variables::Register.new, Variables::Register.new]
         @length = {r3:4, r2:4, r1:4}
       end
+
+      # Swap subtractor
+      def set_arguments (args)
+        args[1], args[2] = args[2], args[1]
+        super
+      end      
     end
   end  
 end
