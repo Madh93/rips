@@ -10,12 +10,15 @@ module Rips
         "jr", 
         "bez", 
         "bnez", 
+        "lesr", 
         "li", 
         "move",
         "nop",
         "neg",
         "not",
         "or",
+        "sesm",
+        "sesr",
         "sub" ]
   end
 end
