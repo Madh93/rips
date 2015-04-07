@@ -33,7 +33,7 @@ module Rips
           output << value.to_bin(@length[key])
         end
 
-        output.insert(-2,@length[:blank]) if (@length.key? :blank)
+        output.insert(-2,0.to_bin(@length[:blank])) if (@length.key? :blank)
 
         output.reverse.join.to_s
       end      
