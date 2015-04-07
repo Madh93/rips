@@ -1,12 +1,10 @@
 #***************#
-#  Example: Li  #
+#    Example    #
 #***************#
 
 # Output in: progfile.dat
 
-
 li $1, 12 # Load 12 in Register 1
-
 li $2, -5 # Load -5 in Register 2
 
-li $14, 78 # Load 78 in Register 14
+add $3, $1, $2 # Reg3 = Reg1 + Reg2
