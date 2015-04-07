@@ -6,8 +6,6 @@ module Rips
 
   debug=false
 
-  Error::message(1) if ARGV.empty?
-
   # Check arguments
   if ARGV.include?("-d")
     debug = true
@@ -16,6 +14,8 @@ module Rips
     debug = true
     ARGV.delete("--debug")
   end
+  
+  Error::message(1) if ARGV.empty?
 
   # Check for a valid file
   if !File.exist? ARGV[0]
