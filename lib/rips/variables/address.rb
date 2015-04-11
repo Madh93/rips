@@ -19,25 +19,12 @@ module Rips
       def syntax? (value)
 
         if (number?(value)) && (between?(value, @range))
-          return true
+          true
         elsif value.is_a?(String)
-          return true
+          true
         else
-          return false
+          false
         end
-=begin
-        if !number?(value)
-          return false
-        end      
-
-        # It should be between syntax range
-        if !between?(value, @range)
-          return false
-        else
-          return true
-        end       
-      end
-=end
       end
     end
   end

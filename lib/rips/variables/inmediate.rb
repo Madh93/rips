@@ -18,16 +18,12 @@ module Rips
       # Check input variable syntax
       def syntax? (value)
 
-        if !number?(value)
-          return false
-        end      
-
         # It should be between syntax range
-        if !between?(value, @range)
-          return false
+        if number?(value) && between?(value, @range)
+          true
         else
-          return true
-        end     
+          false
+        end
       end
       
     end
