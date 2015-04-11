@@ -8,6 +8,8 @@ module Rips
     # @output: array with coded instructions
     # @cmd: line split on tokens (name + arguments)
     # @instruction: instruction instance
+    # @instructions: array with line for each instruction
+    # @labels: name and number line of label
     # @line: number of file's line
     def initialize (debug)
       @debug = debug
@@ -15,7 +17,32 @@ module Rips
       @output = []
       @cmd = {}
       @instruction
-      @line = 1      
+      @instructions = [] 
+      @labels = {}
+      @line = 1  
+    end
+
+    # Store labels and number line 
+    def find_labels
+
+      @input.each_with_index do |line, i|
+
+        label = line.scan(/\w+:/)
+        if !label.empty?
+          @labels[label[0].to_s.split(":").first] = [*@instructions.each_with_index].bsearch{|x, _| x >= i}.last
+        end
+      end
+    end
+
+    # Store number line for each instruction
+    def find_instructions
+
+      @input.each_with_index do |line,i|
+
+        if (line.scan(/\w+:/).empty?) && (line[0] != "#")
+          @instructions << i+1
+        end
+      end
     end
 
     # Stores each new line of file
@@ -26,10 +53,14 @@ module Rips
     # Analyze and translate each instruction
     def run
 
+      find_instructions
+      find_labels
+
       @input.each do |line|
 
         # If line is empty -> next line
-        if !line.empty?
+        # Or if not is a label
+        if (!line.empty?) && (line.scan(/\w+:/).empty?)
 
           parse_input(line)
           @instruction = nil
@@ -39,6 +70,8 @@ module Rips
 
             exists_instruction
             @instruction = get_instruction
+
+            parse_label
             
             argument_size
             argument_syntax
@@ -92,7 +125,17 @@ module Rips
         @cmd[:comments] = line.split("#").slice(1..-1).join
         @cmd[:comments].insert(0,"#") if !@cmd[:comments].empty?
       end
+    end
 
+    # Translate label's name to instruction's number
+    def parse_label
+      if (@instruction.is_a? Rips::Instructions::Bez) ||
+         (@instruction.is_a? Rips::Instructions::Bnez) ||
+         (@instruction.is_a? Rips::Instructions::J) ||
+         (@instruction.is_a? Rips::Instructions::Jal)
+
+          @cmd[:arguments] = [@labels[@cmd[:arguments].first].to_s]
+      end
     end
 
     # Obtain instruction's instance object
