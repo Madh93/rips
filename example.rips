@@ -2,9 +2,27 @@
 #    Example    #
 #***************#
 
-# Output in: progfile.dat
+# Output in progfile.dat
 
-li $1, 12 # Load 12 in Register 1
-li $2, -5 # Load -5 in Register 2
+main:
 
-add $3, $1, $2 # Reg3 = Reg1 + Reg2
+  li $14, 2
+  li $15, 1  
+  li $1, 0  
+  li $2, 0
+
+ajal:
+
+  jal adder
+  j increment
+
+adder:
+
+  add $3, $1, $2 # Reg3 = Reg1 + Reg2
+  jr
+
+increment:
+
+  add $1, $1, $14
+  sub $2, $2, $15
+  j ajal  # Repeat process

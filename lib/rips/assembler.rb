@@ -44,7 +44,7 @@ module Rips
     def find_instructions
 
       @input.each_with_index do |line,i|
-        if (line.scan(/\w+:/).empty?) && (line[0] != "#")
+        if (!line.empty?) && (line.scan(/\w+:/).empty?) && (line[0] != "#")
           @instructions << i+1
         end
       end
@@ -60,6 +60,16 @@ module Rips
 
       find_instructions
       find_labels
+
+      puts "instructions...."
+      @instructions.each do |k|
+        puts "#{k}"
+      end      
+
+      puts "labels...."
+      @labels.each do |k,v|
+        puts "#{k}:#{v}"
+      end
 
       @input.each do |line|
 
@@ -123,9 +133,13 @@ module Rips
         @cmd[:comments] = line
       else
         @cmd[:name] = line.split("#").first.split(" ").first.downcase
-        @cmd[:arguments] = line.split("#").first.split(@cmd[:name])
+        @cmd[:arguments] = line.split("#").first.split("#{@cmd[:name]} ")
         if !@cmd[:arguments].empty?
           @cmd[:arguments] = @cmd[:arguments].pop.split("#").first.delete(" ").split(",")
+        end
+        if @cmd[:arguments].first == "jr" ||
+           @cmd[:arguments].first == "nop"
+           @cmd[:arguments] = []
         end
         @cmd[:comments] = line.split("#").slice(1..-1).join
         @cmd[:comments].insert(0,"#") if !@cmd[:comments].empty?
@@ -139,7 +153,9 @@ module Rips
          (@instruction.is_a? Rips::Instructions::J) ||
          (@instruction.is_a? Rips::Instructions::Jal)
 
+          puts @cmd[:arguments]
           @cmd[:arguments] = [@labels[@cmd[:arguments].first].to_s]
+          puts "Salto a: #{@cmd[:arguments]}"
       end
     end
 
