@@ -12,7 +12,7 @@ module Rips
       def initialize(size = 8)
         super(size)
         @range = [-2**(@length-1), 2**(@length-1)-1]
-        @syntax = "#{@range[0]}..{@range[1]}"
+        @syntax = "#{@range[0]}..#{@range[1]}"
       end
 
       # Check input variable syntax

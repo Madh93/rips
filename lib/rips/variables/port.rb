@@ -13,7 +13,7 @@ module Rips
         super(size)
         @syntax = "@0-3"
         @range = [0, 2**@length-1]
-        @syntax = "@#{@range[0]}-{@range[1]}"
+        @syntax = "@#{@range[0]}-#{@range[1]}"
       end
 
       # Check input variable syntax

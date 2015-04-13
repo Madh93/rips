@@ -26,10 +26,16 @@ module Rips
     def find_labels
 
       @input.each_with_index do |line, i|
-
-        label = line.scan(/\w+:/)
-        if !label.empty?
-          @labels[label[0].to_s.split(":").first] = [*@instructions.each_with_index].bsearch{|x, _| x >= i}.last
+        if !line.empty?
+          label = line.scan(/\w+:/)
+          if (label.size == 1)
+            
+            if !@labels.include?(label[0].to_s.split(":").first)
+              @labels[label[0].to_s.split(":").first] = [*@instructions.each_with_index].bsearch{|x, _| x >= i}.last
+            else
+              Error::message(7, i+1, label[0].to_s.split(":").first) 
+            end
+          end
         end
       end
     end
@@ -38,7 +44,6 @@ module Rips
     def find_instructions
 
       @input.each_with_index do |line,i|
-
         if (line.scan(/\w+:/).empty?) && (line[0] != "#")
           @instructions << i+1
         end
