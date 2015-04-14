@@ -135,7 +135,7 @@ module Rips
         @cmd[:name] = line.split("#").first.split(" ").first.downcase
         @cmd[:arguments] = line.split("#").first.split("#{@cmd[:name]} ")
         if !@cmd[:arguments].empty?
-          @cmd[:arguments] = @cmd[:arguments].pop.split("#").first.delete(" ").split(",")
+          @cmd[:arguments] = @cmd[:arguments].pop.split("#").first.del(/\s+|\t+/).split(",")
         end
         if @cmd[:arguments].first == "jr" ||
            @cmd[:arguments].first == "nop"
