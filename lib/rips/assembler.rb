@@ -61,16 +61,6 @@ module Rips
       find_instructions
       find_labels
 
-      puts "instructions...."
-      @instructions.each do |k|
-        puts "#{k}"
-      end      
-
-      puts "labels...."
-      @labels.each do |k,v|
-        puts "#{k}:#{v}"
-      end
-
       @input.each do |line|
 
         # If line is empty -> next line
@@ -148,14 +138,12 @@ module Rips
 
     # Translate label's name to instruction's number
     def parse_label
-      if (@instruction.is_a? Rips::Instructions::Bez) ||
+      if (@instruction.is_a? Rips::Instructions::Beqz) ||
          (@instruction.is_a? Rips::Instructions::Bnez) ||
          (@instruction.is_a? Rips::Instructions::J) ||
          (@instruction.is_a? Rips::Instructions::Jal)
 
-          puts @cmd[:arguments]
           @cmd[:arguments] = [@labels[@cmd[:arguments].first].to_s]
-          puts "Salto a: #{@cmd[:arguments]}"
       end
     end
 
