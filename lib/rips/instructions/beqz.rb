@@ -3,7 +3,7 @@ require "rips/instructions/instruction"
 module Rips
   module Instructions
 
-    class Bez < Instruction
+    class Beqz < Instruction
 
       attr_reader :variables, :length
 

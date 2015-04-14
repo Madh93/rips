@@ -8,7 +8,7 @@ module Rips
         "jal", 
         "ji", 
         "jr", 
-        "bez", 
+        "beqz", 
         "bnez", 
         "lesr", 
         "li", 

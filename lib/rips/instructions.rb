@@ -1,6 +1,6 @@
 require "rips/instructions/add"
 require "rips/instructions/and"
-require "rips/instructions/bez"
+require "rips/instructions/beqz"
 require "rips/instructions/bnez"
 require "rips/instructions/j"
 require "rips/instructions/jal"
