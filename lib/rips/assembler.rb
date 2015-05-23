@@ -26,15 +26,18 @@ module Rips
     def find_labels
 
       @input.each_with_index do |line, i|
-        if !line.empty?
+        if (!line.empty?) && (line[0] != "#")
           label = line.scan(/\w+:/)
-          if (label.size == 1)
-            
-            if !@labels.include?(label[0].to_s.split(":").first)
-              @labels[label[0].to_s.split(":").first] = [*@instructions.each_with_index].bsearch{|x, _| x >= i}.last
+          if (label.size == 1) && (line[-1] == ":")
+
+            if !@labels.include?(label.to_s.split(":").first)
+                @labels[label.to_s.split(":").first] = [*@instructions.each_with_index].bsearch{|x, _| x >= i}.last
             else
-              Error::message(7, i+1, label[0].to_s.split(":").first) 
+              Error::message(7, i+1, label.to_s.split(":").first) 
             end
+            
+          elsif ((label.size > 1) || (line[-1] != ":") && (!@instructions.include?(i+1)))
+            Error::message(8, i+1, line) 
           end
         end
       end
