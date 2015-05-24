@@ -17,13 +17,8 @@ module Rips
 
       # Check input variable syntax
       def valid_syntax? (value)
-
-        # It should be between syntax range
-        if port?(value) && between?(value, @range)
-          true
-        else
-          false
-        end       
+        value.extend(Rips::Utils::StringVariableExtension)
+        value.port? && value.valid_range?(@range)
       end
       
     end

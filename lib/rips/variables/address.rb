@@ -17,15 +17,10 @@ module Rips
 
       # Check input variable syntax
       def valid_syntax? (value)
-
-        if (number?(value)) && (between?(value, @range))
-          true
-        elsif value.is_a?(String)
-          true
-        else
-          false
-        end
+        value.extend(Rips::Utils::StringVariableExtension)
+        value.address?(@range)
       end
+      
     end
   end
 end

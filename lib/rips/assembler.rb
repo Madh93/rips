@@ -187,7 +187,7 @@ module Rips
     def argument_syntax
       @instruction.variables.each_with_index do |var,i|
         if var.valid_syntax? @cmd[:arguments][i]
-          @cmd[:arguments][i] = var.to_i(@cmd[:arguments][i])
+          @cmd[:arguments][i] = @cmd[:arguments][i].arg_to_i
         else
           Error::message( 6,
                           @line,
