@@ -4,11 +4,7 @@ module Rips
 
       # Binary search or standard search depends version
       def search(&block)
-        if RUBY_VERSION >= "2"
-          self.bsearch(block)
-        else
-          self.find(block)
-        end
+        RUBY_VERSION >= "2" ? self.bsearch(&block) : self.find(&block)
       end
 
     end

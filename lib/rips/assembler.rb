@@ -4,6 +4,10 @@ class String
   include Rips::Utils::StringAssemblerExtension
 end
 
+class Array
+  include Rips::Utils::ArrayExtension
+end
+
 module Rips
   class Assembler
     
@@ -28,24 +32,13 @@ module Rips
 
     # Store labels and number line 
     def find_labels
-
       @input.each_with_index do |line, i|
-        if (!line.empty?) && (line[0] != "#")
-          label = line.scan(/\w+:/)
-          if (label.size == 1) && (line[-1] == ":")
-
-            if !@labels.include?(label.to_s.split(":").first)
-              if RUBY_VERSION >= "2"
-                @labels[label.to_s.split(":").first] = [*@instructions.each_with_index].bsearch{|x, _| x >= i}.last
-              else
-                @labels[label.to_s.split(":").first] = [*@instructions.each_with_index].find{|x, _| x >= i}.last
-              end
-            else
-              Error::message(7, i+1, label.to_s.split(":").first) 
-            end
-
-          elsif ((label.size > 1) || (line[-1] != ":") && (!@instructions.include?(i+1)))
-            Error::message(8, i+1, line) 
+        if line.label?(i)
+          label = line.split(":")[0]
+          if !@labels.include?(label)
+            @labels[label] = [*@instructions.each_with_index].search{|x, _| x >= i}.last
+          else
+            Error::message(7, i+1, line) 
           end
         end
       end
@@ -53,9 +46,8 @@ module Rips
 
     # Store number line for each instruction
     def find_instructions
-
       @input.each_with_index do |line,i|
-        if (!line.empty?) && (line.scan(/\w+:/).empty?) && (line[0] != "#")
+        if line.instruction?
           @instructions << i+1
         end
       end

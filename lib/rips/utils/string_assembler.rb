@@ -1,17 +1,17 @@
+require "rips/error"
+
 module Rips
   module Utils
     module StringAssemblerExtension
 
+      # Delete spaces and tabs
       def del(regexp)
         gsub(regexp,'')
       end
 
+      # Delete spaces and tabs
       def del!(regexp)
         gsub!(regexp,'')
-      end
-
-      def saludo
-        puts "hola"
       end
 
       # Return integer part of arguments of an instruction
@@ -19,21 +19,29 @@ module Rips
         (/\A[-]?\d+\z/ === self) ? self.to_i : self.slice(1..-1).to_i
       end
 
-
-
-
-      def number? (value)
-        /\A[-]?\d+\z/ === value
+      # Check if string is a comment
+      def comment?
+        self[0] == "#"
       end
 
-      # Check if value is between in permitted range
-      def valid_range? (range)
-        if number?(self.slice(1..-1))
-          self.to_i.between?(range[0], range[1])
-        else 
-          self.slice(1..-1).to_i.between?(range[0], range[1])
+      # Check if string is a label
+      def label?(line)
+        if (!self.empty?) && (self[0] != "#") && (self[-1] == ":")
+          label = self.scan(/\w+:/)
+          if (label.size == 1)
+            return true
+          elsif (label.size > 1)
+            Error::message(8, line+1, self) 
+          end
         end
-      end     
+      end
+
+      # Check if string is a instruction
+      def instruction?
+        (!self.empty?) && (self[0] != "#") && (self.scan(/\w+:/).empty?)
+      end
+
+ 
     end
   end
 end
