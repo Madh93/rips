@@ -1,6 +1,11 @@
 require "rips/instructions/set"
 require "rips/formats"
 require "rips/variables"
+require "rips/utils"
+    
+class Integer
+  include Rips::Utils::IntegerExtension
+end
 
 module Rips
   module Instructions

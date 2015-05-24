@@ -1,5 +1,9 @@
 require "rips/instructions"
 
+class String
+  include Rips::Utils::StringAssemblerExtension
+end
+
 module Rips
   class Assembler
     
@@ -20,7 +24,6 @@ module Rips
       @instructions = [] 
       @labels = {}
       @line = 1  
-      "hola".saludo
     end
 
     # Store labels and number line 
