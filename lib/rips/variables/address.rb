@@ -16,7 +16,7 @@ module Rips
       end
 
       # Check input variable syntax
-      def syntax? (value)
+      def valid_syntax? (value)
 
         if (number?(value)) && (between?(value, @range))
           true

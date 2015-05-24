@@ -11,13 +11,12 @@ module Rips
       # @range: bit's range for variable
       def initialize(size = 2)
         super(size)
-        @syntax = "@0-3"
         @range = [0, 2**@length-1]
         @syntax = "@#{@range[0]}-#{@range[1]}"
       end
 
       # Check input variable syntax
-      def syntax? (value)
+      def valid_syntax? (value)
 
         # It should be between syntax range
         if port?(value) && between?(value, @range)

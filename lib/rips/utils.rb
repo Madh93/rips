@@ -15,4 +15,8 @@ class String
   def del!(regexp)
     gsub!(regexp,'')
   end
+
+  def saludo
+    puts "hola"
+  end
 end

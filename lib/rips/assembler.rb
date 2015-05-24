@@ -20,6 +20,7 @@ module Rips
       @instructions = [] 
       @labels = {}
       @line = 1  
+      "hola".saludo
     end
 
     # Store labels and number line 
@@ -182,7 +183,7 @@ module Rips
     # Check if arguments are the same variable type of instruction
     def argument_syntax
       @instruction.variables.each_with_index do |var,i|
-        if var.syntax? @cmd[:arguments][i]
+        if var.valid_syntax? @cmd[:arguments][i]
           @cmd[:arguments][i] = var.to_i(@cmd[:arguments][i])
         else
           Error::message( 6,
