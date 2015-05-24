@@ -31,11 +31,15 @@ module Rips
           if (label.size == 1) && (line[-1] == ":")
 
             if !@labels.include?(label.to_s.split(":").first)
+              if RUBY_VERSION >= "2"
                 @labels[label.to_s.split(":").first] = [*@instructions.each_with_index].bsearch{|x, _| x >= i}.last
+              else
+                @labels[label.to_s.split(":").first] = [*@instructions.each_with_index].find{|x, _| x >= i}.last
+              end
             else
               Error::message(7, i+1, label.to_s.split(":").first) 
             end
-            
+
           elsif ((label.size > 1) || (line[-1] != ":") && (!@instructions.include?(i+1)))
             Error::message(8, i+1, line) 
           end
@@ -152,7 +156,7 @@ module Rips
 
     # Obtain instruction's instance object
     def get_instruction
-      Object.const_get("Rips::Instructions::#{@cmd[:name].capitalize}").new
+      Rips::Instructions.const_get("#{@cmd[:name].capitalize}").new
     end
 
     # Exists instruction in Instruction Set?
