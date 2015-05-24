@@ -12,6 +12,11 @@ module Rips
         @length = length
       end
 
+      # Return error message about incorrent syntax
+      def error (value)
+        "unexpected `#{value}` (expected a `#{self.class.to_s.split(':').last}` argument like `#{@syntax}`)"
+      end
+
     end
   end
 end

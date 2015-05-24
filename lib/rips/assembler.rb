@@ -76,13 +76,13 @@ module Rips
           # If it's a comment -> show but not work with it
           if line[0] != "#"
 
-            exists_instruction
+            exists_instruction?
             @instruction = get_instruction
 
             parse_label
             
-            argument_size
-            argument_syntax
+            argument_size?
+            argument_syntax?
 
             @instruction.set_arguments(@cmd[:arguments])
             @output << @instruction.code
@@ -156,16 +156,14 @@ module Rips
     end
 
     # Exists instruction in Instruction Set?
-    def exists_instruction
+    def exists_instruction?
       if !Instructions::SET.include? (@cmd[:name])
-        Error::message( 4, 
-                        @line, 
-                        @cmd[:name] )
+        Error::message(4, @line, @cmd[:name] )
       end
     end
 
     # Check number of arguments given with expected by instruction
-    def argument_size
+    def argument_size?  
       if @cmd[:arguments].size != @instruction.args_number
         Error::message( 5, 
                         @line, 
@@ -176,14 +174,12 @@ module Rips
     end
 
     # Check if arguments are the same variable type of instruction
-    def argument_syntax
+    def argument_syntax?
       @instruction.variables.each_with_index do |var,i|
         if var.valid_syntax? @cmd[:arguments][i]
           @cmd[:arguments][i] = @cmd[:arguments][i].arg_to_i
         else
-          Error::message( 6,
-                          @line,
-                          var.error(@cmd[:arguments][i]) )     
+          Error::message(6, @line, var.error(@cmd[:arguments][i]) )     
         end
       end
     end
