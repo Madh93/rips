@@ -21,15 +21,7 @@ module Rips
         @output = []
       end
 
-      # Return number of arguments
-      def args_number
-        @format.args_number
-      end      
-
-      # Pass all arguments at once
-      def set_arguments (args)
-        @format.set_arguments(args)
-      end
+      private
 
       # Add blanks (0 values) for instructions with free space
       def add_blank
@@ -40,6 +32,18 @@ module Rips
         else
           @output.insert(-@variables.size,0.to_bin(@length[:blank]))
         end
+      end
+
+      public
+
+      # Return number of arguments
+      def args_number
+        @format.args_number
+      end      
+
+      # Pass all arguments at once
+      def set_arguments (args)
+        @format.set_arguments(args)
       end
 
       # Coding to Machine Code

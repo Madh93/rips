@@ -41,7 +41,22 @@ module Rips
         (!self.empty?) && (self[0] != "#") && (self.scan(/\w+:/).empty?)
       end
 
- 
+      # Get intruction's name of string
+      def instruction_name
+        self.split("#").first.split(" ").first.downcase
+      end
+
+      # Get intruction's arguments of string
+      def instruction_arguments(instruction)
+        args = self.split("#").first.split("#{instruction} ")
+        args.pop.split("#").first.del(/\s+|\t+/).split(",") unless args.empty?
+      end
+
+      # Get intruction's comments of string
+      def instruction_comments
+        self.split("#").slice(1..-1).join
+      end
+
     end
   end
 end

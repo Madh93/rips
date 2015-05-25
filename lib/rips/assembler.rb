@@ -30,6 +30,17 @@ module Rips
       @line = 1  
     end
 
+    private
+
+    # Store number line for each instruction
+    def find_instructions
+      @input.each_with_index do |line,i|
+        if line.instruction?
+          @instructions << i+1
+        end
+      end
+    end
+
     # Store labels and number line 
     def find_labels
       @input.each_with_index do |line, i|
@@ -44,98 +55,34 @@ module Rips
       end
     end
 
-    # Store number line for each instruction
-    def find_instructions
-      @input.each_with_index do |line,i|
-        if line.instruction?
-          @instructions << i+1
-        end
-      end
-    end
-
-    # Stores each new line of file
-    def << (value)
-      @input << value.strip
-    end
-
-    # Analyze and translate each instruction
-    def run
-
-      find_instructions
-      find_labels
-
-      @input.each do |line|
-
-        # If line is empty -> next line
-        # Or if not is a label
-        if (!line.empty?) && (line.scan(/\w+:/).empty?)
-
-          parse_input(line)
-          @instruction = nil
-
-          # If it's a comment -> show but not work with it
-          if line[0] != "#"
-
-            exists_instruction?
-            @instruction = get_instruction
-
-            parse_label
-            
-            argument_size?
-            argument_syntax?
-
-            @instruction.set_arguments(@cmd[:arguments])
-            @output << @instruction.code
-          end
-          show if @debug
-        end        
-        @line += 1
-      end
-      
-      generate
-    end
-
-    # Codification log of instruction
-    def show
-
-      # If line was a comment -> @instruction should be nil
-      if @instruction.nil?
-        codification = ""
-      else
-        codification = @instruction.code.scan(/.{4}|.+/).join("_")
-      end
-
-      puts  "@#{@line}:" \
-            "\t#{codification}" \
-            "\t#{@cmd[:comments]}"
-    end
-
-    # Generate output in "progfile.dat"
-    def generate
-      File.open("progfile.dat", "w") do |f|
-        @output.each do |line|
-          f.puts line
-        end
-      end        
-    end        
-
     # Split on tokens
     def parse_input (line)
 
-      if line[0] == "#"
+      if line.comment?
         @cmd[:comments] = line
       else
-        @cmd[:name] = line.split("#").first.split(" ").first.downcase
-        @cmd[:arguments] = line.split("#").first.split("#{@cmd[:name]} ")
-        if !@cmd[:arguments].empty?
-          @cmd[:arguments] = @cmd[:arguments].pop.split("#").first.del(/\s+|\t+/).split(",")
+        @cmd[:name] = line.instruction_name
+        if (@cmd[:name] == "jr ") || (@cmd[:name] == "nop ")
+          @cmd[:arguments] = []
+        else
+          @cmd[:arguments] = line.instruction_arguments(@cmd[:name])
         end
-        if @cmd[:arguments].first == "jr" ||
-           @cmd[:arguments].first == "nop"
-           @cmd[:arguments] = []
-        end
-        @cmd[:comments] = line.split("#").slice(1..-1).join
+        @cmd[:comments] = line.instruction_comments
         @cmd[:comments].insert(0,"#") if !@cmd[:comments].empty?
+      end
+    end
+
+    # Obtain instruction's instance object
+    def get_instruction
+      Rips::Instructions.const_get("#{@cmd[:name].capitalize}").new
+    end
+
+    # Exists instruction in Instruction Set?
+    def exists_instruction?
+      if Instructions::SET.include? (@cmd[:name])
+        @instruction = get_instruction
+      else
+        Error::message(4, @line, @cmd[:name] )
       end
     end
 
@@ -149,19 +96,7 @@ module Rips
           @cmd[:arguments] = [@labels[@cmd[:arguments].first].to_s]
       end
     end
-
-    # Obtain instruction's instance object
-    def get_instruction
-      Rips::Instructions.const_get("#{@cmd[:name].capitalize}").new
-    end
-
-    # Exists instruction in Instruction Set?
-    def exists_instruction?
-      if !Instructions::SET.include? (@cmd[:name])
-        Error::message(4, @line, @cmd[:name] )
-      end
-    end
-
+    
     # Check number of arguments given with expected by instruction
     def argument_size?  
       if @cmd[:arguments].size != @instruction.args_number
@@ -182,6 +117,58 @@ module Rips
           Error::message(6, @line, var.error(@cmd[:arguments][i]) )     
         end
       end
+    end
+
+    # Codification log of instruction
+    def show (i)
+      puts  "@#{@line}:" \
+            "\t#{@output[i].scan(/.{4}|.+/).join("_") unless @instruction.nil?}" \
+            "\t#{@cmd[:comments]}"
+    end
+
+    # Generate output in "progfile.dat"
+    def generate
+      File.open("progfile.dat", "w") do |f|
+        @output.each do |line|
+          f.puts line
+        end
+      end        
+    end        
+
+    public
+
+    # Stores each new line of file
+    def << (value)
+      @input << value.strip
+    end
+
+    # Analyze and translate each instruction
+    def run
+
+      find_instructions
+      find_labels
+
+      @input.each do |line|
+        if (line.instruction?) || (line.comment?)
+          parse_input(line)
+          @instruction = nil
+          # If it's a comment -> show but not work with it
+          if line.instruction?
+            
+            exists_instruction?
+            parse_label
+            argument_size?
+            argument_syntax?
+
+            @instruction.set_arguments(@cmd[:arguments])
+            @output << @instruction.code
+          end
+          show(@output.size-1) if @debug
+        end
+        @line += 1
+      end
+      
+      generate
     end
   end
 end
