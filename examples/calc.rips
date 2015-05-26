@@ -1,0 +1,55 @@
+#### Simple calculator ###
+
+# Assign opcodes to add, sub and mul
+define:
+    li $5, 8    # add (1000)       
+    li $6, 4    # sub (0100)
+    li $7, 2    # mul(0010)
+
+main:
+
+    # Load from I/O to registers
+    lesr $1, @0
+    lesr $2, @1
+    lesr $3, @2
+
+    # Check input is add, sub or mul
+    sub $4, $3, $5
+    beqz op_add
+    
+    sub $4, $3, $6
+    beqz op_sub
+    
+    sub $4, $3, $7
+    beqz op_mul
+    
+    j main  # Infinite loop
+
+op_add:
+
+    add $4, $1, $2
+    j store
+
+op_sub:
+
+    sub $4, $1, $2
+    j store
+
+op_mul:
+
+    li $8, 1  # Count
+    move $4, $0
+    add $1, $1, $0  # IF $1==0 -> finish loop
+    beqz store    
+
+loop:
+
+    add $4, $4, $2  # Repeat $1 times
+    sub $1, $1, $8  
+    bnez loop
+
+store:
+
+    # Store in I/O from register
+    sesr @0, $4
+    j main

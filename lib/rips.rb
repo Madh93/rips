@@ -27,7 +27,7 @@ module Rips
 
     # Check if it's a valid input file
     def source_file
-      source = @argv.find{|x| /\.input$/ =~ x }  ##### CAMBIIIAAAR POR .RIIIIPPPPSSS
+      source = @argv.find{|x| /\.rips$/ =~ x }
       Error::message(1) if source.nil? 
       Error::message(2) if !File.exist?(source)
       Error::message(3) if !File.readable?(source)
