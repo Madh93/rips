@@ -127,8 +127,8 @@ module Rips
     end
 
     # Generate output in "progfile.dat"
-    def generate
-      File.open("progfile.dat", "w") do |f|
+    def generate (path)
+      File.open(path, "w") do |f|
         @output.each do |line|
           f.puts line
         end
@@ -143,8 +143,7 @@ module Rips
     end
 
     # Analyze and translate each instruction
-    def run
-
+    def run (path = "progfile.dat")
       find_instructions
       find_labels
 
@@ -167,8 +166,8 @@ module Rips
         end
         @line += 1
       end
-      
-      generate
+      generate(path)
     end
+      
   end
 end
