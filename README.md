@@ -2,7 +2,7 @@
 [![Gem Version](https://badge.fury.io/rb/rips.svg)](http://badge.fury.io/rb/rips)
 [![Dependency Status](https://gemnasium.com/Madh93/rips.svg)](https://gemnasium.com/Madh93/rips)
 
-Simple assembler written in Ruby for a simple 16-bit CPU written in Verilog. Based in MIPS syntax with next features:
+Simple assembler written in Ruby for a [simple 16-bit CPU written in Verilog](https://github.com/Madh93/scpu/). Based in MIPS syntax with next features:
 
 - 18 basic instructions
 - 16 registers ($0-$15)
