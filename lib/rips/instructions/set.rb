@@ -11,6 +11,7 @@ module Rips
         "beqz", 
         "bnez", 
         "lesr", 
+        "lest", 
         "li", 
         "move",
         "nop",
