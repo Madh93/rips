@@ -18,6 +18,7 @@ module Rips
         "neg",
         "not",
         "or",
+        "print",
         "sesm",
         "sesr",
         "sub" ]
