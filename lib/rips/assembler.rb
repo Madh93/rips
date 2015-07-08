@@ -62,7 +62,7 @@ module Rips
         @cmd[:comments] = line
       else
         @cmd[:name] = line.instruction_name
-        if (@cmd[:name] == "jr ") || (@cmd[:name] == "nop ")
+        if (@cmd[:name] == "jr") || (@cmd[:name] == "nop")
           @cmd[:arguments] = []
         else
           @cmd[:arguments] = line.instruction_arguments(@cmd[:name])

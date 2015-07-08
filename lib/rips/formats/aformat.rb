@@ -12,6 +12,10 @@ module Rips
         super(opcode,0)
         @args = {}
       end
+
+      # Pass all arguments at once
+      def set_arguments (args)
+      end
       
     end
   end
