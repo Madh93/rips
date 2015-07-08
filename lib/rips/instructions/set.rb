@@ -21,6 +21,7 @@ module Rips
         "print",
         "sesm",
         "sesr",
+        "srl",
         "sub" ]
   end
 end
